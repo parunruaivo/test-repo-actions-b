@@ -1,0 +1,22 @@
+name: Octo Queue deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        required: false
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      TRIGGER_REPO: test-repo-actions-b
+      CI_PROVIDER: github-actions
+      SOURCE: ${{ inputs.source }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Octo Queue interdependent deploy report
+        run: |
+          export DEPLOY_BRANCH="${GITHUB_REF_NAME}"
+          bash scripts/oq-deploy-report.sh
